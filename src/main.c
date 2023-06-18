@@ -4,18 +4,16 @@
 #include <limits.h>
 
 #include <util.h>
-#include <pqueue.h>
-#include <thcontrol.h>
+#include <pdata.h>
 #include <strmatch/bruteforce.h>
 #include <strmatch/shiftand.h>
 #include <strmatch/bmh.h>
 
-#define THREAD_NUMBER       16
 #define MAX_GEM_SIZE        10001
 #define MAX_PATTERN_SIZE    101
 
 int main(int argc, char *argv[]){
-    uint chosen_method, gem_count;
+    int chosen_method, gem_count;
     FILE *input_file, *output_file;
 
     int (*method[3])() = { 
@@ -28,19 +26,17 @@ int main(int argc, char *argv[]){
     output_file = change_extension(argv[1]);
 
     fscanf(input_file, "%d ", &gem_count);
-    process_queue_t *match_queue = process_queue_create(gem_count);
-    process_queue_read(match_queue, MAX_GEM_SIZE, MAX_PATTERN_SIZE, input_file);
-    int *ans;
-
-    pthread_t controller;
-    controller_arg_t arg = { method[chosen_method], THREAD_NUMBER, match_queue };
-    pthread_create(&controller, NULL, thread_controller, (void*)&arg);
-    pthread_join(controller, (void**)&ans);
+    process_data_t *data_vector = (process_data_t*) malloc(sizeof(process_data_t)*gem_count);
+    read_data(data_vector, gem_count,input_file);
+    int *ans= malloc(sizeof(int)*gem_count);
+    
+    search_function(ans,method[chosen_method],data_vector, gem_count);
     write_answers(ans,gem_count,output_file);
 
+    erase_data(data_vector,gem_count);
     free(ans);
-    process_queue_destroy(match_queue);
     fclose(input_file);
     fclose(output_file);
+    
 	return 0;
 }
