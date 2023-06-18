@@ -14,5 +14,7 @@
 
 int getpos(int size, int offset);
 char* parse_name(char *name);
+FILE* change_extension(FILE* input);
+void write_answers(int* ans, int gems, FILE* out);
 
 #endif
