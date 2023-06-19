@@ -21,8 +21,8 @@ int bmh(char* tex, char* pat, int rev){
     int init_tex_pos, cur_tex_pos, comp_tex_pos;
     int comp_pat_pos;
 
-    if(rev) init_tex_pos = tex_size - pat_size + 2;
-    else init_tex_pos = pat_size;
+    if(rev) init_tex_pos = tex_size - pat_size + 1;
+    else init_tex_pos = 0;
 
     while(i < pat_size + tex_size - 1) {
         cur_tex_pos = getpos(tex_size, init_tex_pos + i);
