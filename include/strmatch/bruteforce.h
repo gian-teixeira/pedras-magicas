@@ -1,6 +1,6 @@
 #ifndef BRUTEF
 #define BRUTEF
-
+#include <stdio.h>
 #include <util.h>
 #include <config.h>
 #include <string.h>

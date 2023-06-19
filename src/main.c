@@ -28,7 +28,10 @@ int main(int argc, char *argv[]){
     gem_count = get_int(input_file);
     process_queue_t *match_queue = process_queue_create(gem_count);
     process_queue_read(match_queue, MAX_GEM_SIZE, MAX_PATTERN_SIZE, input_file);
- 
+
+    /*process_data_t aux_data = process_queue_pop(match_queue);
+    printf("%d\n", bruteforce(aux_data.text, aux_data.pattern, 1) + 1);*/
+
     // Calling the controller 
     pthread_t controller;
     controller_arg_t arg = {method[chosen_method], THREAD_NUMBER, match_queue};
