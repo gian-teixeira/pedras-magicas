@@ -5,7 +5,6 @@ int bruteforce(char* tex, char* pat, int rev){
     int pattern_size = strlen(pat);
     int to_seek = text_size + pattern_size - 1;
     int dir = rev ? -1 : 1;
-
     
     int n = strlen(tex);
     int m = strlen(pat);
@@ -28,12 +27,12 @@ int bruteforce(char* tex, char* pat, int rev){
                 match = 0;
                 break;
             }
-            t = (t+1) % n;
             p++;
+            if(p < m) t = (t+1) % n;
         }
         
         if(!match) continue;
-        if(rev) return t - 1;
+        if(rev) return t;
         else return begin;
     }
 
