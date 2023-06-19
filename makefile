@@ -9,19 +9,17 @@ H_SOURCE=$(wildcard $(INCLUDE_DIR)/*.h)
 OBJ=$(subst .c,.o,$(subst $(SRC_DIR),$(BUILD_DIR),$(C_SOURCE)))
 
 CC=gcc
-CC_FLAGS=-c -g -I include/ -pthread -w -fsanitize=leak
+CC_FLAGS=-c -I include/ -pthread -w 
  
 all: $(PROJ_NAME)
 	
 $(PROJ_NAME): $(OBJ)
-	@echo 'Finally, building $@'
 	$(CC) $^ -o $@
-	@echo 'Finished building binary: $@'
+	@printf '\nBuild is done: tp3\n'
 
 $(BUILD_DIR)/%.o: $(SRC_DIR)/%.c 
 	@mkdir -p build
-	@echo 'Building $<'
-	$(CC) -c $< $(CC_FLAGS) -o $@ 
+	$(CC) -c $< $(CC_FLAGS) -o $@
 
 clean:
 	rm -rf build/

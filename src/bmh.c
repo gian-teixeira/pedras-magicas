@@ -3,44 +3,45 @@
 
 // Função que converte char em index !!!
 
-int bmh(char* text, char* pattern, int rev){
-    int pattern_size = strlen(pattern);
-    int text_size = strlen(text);
-    int to_seek = text_size + pattern_size;
+int bmh(char* tex, char* pat, int rev){
+    int pat_size = strlen(pat);
+    int tex_size = strlen(tex);
+    int to_seek = tex_size + pat_size;
     int dir = rev ? -1 : 1;
     
-    int shift_table[26];
-    for(int i = 0; i < 26; i++) shift_table[i] = pattern_size;    
-    for(int i = 0; i < pattern_size - 1; i++)
-        shift_table[pattern[i] - 'a'] = pattern_size - i - 1;
-
-    int i, j, k;
-    int initial_text_pos;
-    int cur_text_pos;
-    int offset;
     
-    i = 0;
-    while(i < to_seek) {
-        offset = text_size + i*dir - rev;
-        offset += (pattern_size - 1)*dir;
-        
-        j = pattern_size;
-        k = offset;
-        initial_text_pos = getpos(text_size, k);
-        
-        while (j > 0) {
-            cur_text_pos = getpos(text_size, k);
-            if(text[cur_text_pos] != pattern[j-1]) break;
-            k -= dir; 
-            j--;
+    if(rev) strrev(pat);
+    
+    // Creating the masks
+    int shift_table[26];
+    for(int i = 0; i < 26; i++) shift_table[i] = pat_size;    
+    for(int i = 0; i < pat_size - 1; i++)
+        shift_table[pat[i] - 'a'] = pat_size - i - 1;
+    
+    int j, i = 0;
+    int init_tex_pos, cur_tex_pos, comp_tex_pos;
+    int comp_pat_pos;
+
+    if(rev) init_tex_pos = tex_size - pat_size + 2;
+    else init_tex_pos = pat_size;
+
+    while(i < pat_size + tex_size - 1) {
+        cur_tex_pos = getpos(tex_size, init_tex_pos + i);
+
+        for(j = pat_size; j > 0; j--) {
+            comp_tex_pos = getpos(tex_size, cur_tex_pos + j - 1);
+            comp_pat_pos = j - 1;
+            if(tex[comp_tex_pos] != pat[comp_pat_pos]) 
+                break;
         }
         
+        comp_tex_pos = getpos(tex_size, cur_tex_pos + pat_size - 1);
         if(j == 0) {
-            offset = k + dir;
-            return getpos(text_size, offset);
+            if(rev) return comp_tex_pos;
+            return cur_tex_pos;
         }
-        
-        i = shift_table[text[initial_text_pos] - 'a'] + i;
+
+        i += shift_table[tex[comp_tex_pos] - 'a'];
     }
 
     return NO_MATCH;
