@@ -10,8 +10,13 @@
 #include <strmatch/bruteforce.h>
 #include <strmatch/shiftand.h>
 #include <strmatch/bmh.h>
+#include <timec.h>
 
 int main(int argc, char *argv[]){
+
+    timespecs_t *exec_time = create_time_specs();
+    start_time_count(exec_time);
+
     int chosen_method, gem_count, *ans;
     FILE *input_file, *output_file;
     int (*method[3])() = { 
@@ -40,6 +45,10 @@ int main(int argc, char *argv[]){
     //Joining the threads and printing the answers
     pthread_join(controller, (void**)&ans);
     write_answers(ans, gem_count, output_file);
+
+    stop_time_count(exec_time);
+    time_specs_print(exec_time);
+    erase_time_specs(exec_time);
 
     // Deallocating memory
     process_queue_destroy(match_queue);

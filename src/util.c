@@ -43,7 +43,13 @@ FILE* take_output(FILE* input)
 void write_answers(int* ans,int gems,FILE* out)
 {
     for(int i=0;i<gems;i++){
-        if(ans[i]>10000) fprintf(out,"N\n");
-        else fprintf(out,"S %d\n",ans[i]);
+        if(ans[i]>10000){
+            fprintf(out,"N\n");
+            printf("N\n");
+        }
+        else{
+            fprintf(out,"S %d\n",ans[i]);
+            printf("S %d\n",ans[i]);
+        }
     }
 }
