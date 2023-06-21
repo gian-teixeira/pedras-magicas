@@ -1,11 +1,9 @@
 #include <strmatch/bruteforce.h>
 
-int bruteforce(char* tex, char* pat, int rev){   
-    int text_size = strlen(tex);
-    int pattern_size = strlen(pat);
-    int to_seek = text_size + pattern_size - 1;
-    int dir = rev ? -1 : 1;
-    
+// Finds the first occurence of pat in tex using the brute
+// force approach. Works in forward order if rev is true or 
+// in the inverse order otherwise
+int bruteforce(char* tex, char* pat, int rev){    
     int n = strlen(tex);
     int m = strlen(pat);
 
@@ -35,20 +33,6 @@ int bruteforce(char* tex, char* pat, int rev){
         if(rev) return t;
         else return begin;
     }
-
-
-    /*for(int i=0;i<to_seek;i++) 
-    {
-        for(int j = 0; j < pattern_size; j++) {
-            int offset = i + j*dir - rev;
-            int text_pos = getpos(text_size, offset);
-            if(tex[text_pos]!=pat[j]) break;
-            if(j + 1 == pattern_size) {
-                int start_offset = text_pos - pattern_size*dir + dir;
-                return getpos(text_size, start_offset);
-            }
-        }
-    }*/
     
     return NO_MATCH;
 }

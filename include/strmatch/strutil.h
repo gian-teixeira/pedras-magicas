@@ -1,6 +1,9 @@
 #ifndef STRUTIL.H
 #define STRUTIL.H
 
-int getpos(int siIze, int offset);
+#include <string.h>
+
+int getpos(int size, int offset);
+void strrev(char *str);
 
 #endif
