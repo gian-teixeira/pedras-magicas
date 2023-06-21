@@ -1,5 +1,7 @@
 #include <util.h>
 
+// Gets an int from provided buffer. The newline
+// character is taken but ignored
 int get_int(FILE *input_buffer)
 {
     char tmp_buffer[20];
@@ -7,6 +9,8 @@ int get_int(FILE *input_buffer)
     return atoi(tmp_buffer);
 }
 
+// Takes a file path and gets the name just
+// before the extension
 char *parse_name(char *name)
 {
     char *pt = strrchr(name,'.');
@@ -27,6 +31,8 @@ char *parse_name(char *name)
     return parsed;
 }
 
+// Given and input file, opens an output file
+// with same name and different extension
 FILE* take_output(FILE* input)
 {
     char* input_file_name = parse_name(input);
