@@ -1,5 +1,8 @@
 #include <thcontrol.h>
 
+// Takes data from a data queue and uses the required
+// string match function to process it, saving the
+// result in the related arg answer address
 void *first_ocurrence_finder(void *arg_v)
 {
     finder_arg_t *arg = (finder_arg_t*)arg_v;
@@ -28,6 +31,8 @@ void *first_ocurrence_finder(void *arg_v)
     return NULL;
 }
 
+// Controll the exection if a certain number of occurence
+// finders
 void *thread_controller(void *argv)
 {
     controller_arg_t *arg = (controller_arg_t*)argv;
@@ -36,7 +41,7 @@ void *thread_controller(void *argv)
     pthread_mutex_t data_lock;
     finder_arg_t finder_arg;
     int *ans;
-
+    
     ans = malloc(arg->match_queue->size * sizeof(int));
     thread = malloc(arg->thread_number * sizeof(pthread_t));
     pthread_mutex_init(&data_lock, NULL);
@@ -46,11 +51,13 @@ void *thread_controller(void *argv)
         .match_function = arg->match_function,
         .ans = ans
     };
-
+    
+    // Start finders execution
     for(int i = 0; i < arg->thread_number; i++)
         pthread_create(&thread[i], NULL, 
             first_ocurrence_finder, (void*)&finder_arg);
-
+    
+    // Stop finders
     for(int i = 0; i < arg->thread_number; i++)
         pthread_join(thread[i], NULL);
 
